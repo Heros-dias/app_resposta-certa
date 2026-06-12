@@ -1,0 +1,166 @@
+{
+  "status": [
+    {
+      "id": "1",
+      "message": "Backend conectado"
+    }
+  ],
+  "usuarios": [
+    {
+      "id": "1",
+      "nome": "Aluno Resposta Certa",
+      "email": "aluno@respostacerta.com",
+      "senha": "123456",
+      "pontos": 174,
+      "acertos": 82,
+      "streak": 0
+    },
+    {
+      "nome": "teste",
+      "email": "teste@gmail.com",
+      "senha": "123456",
+      "pontos": 0,
+      "acertos": 0,
+      "streak": 0,
+      "id": "m9vnyXMJsQ4"
+    }
+  ],
+  "estatisticas": [
+    {
+      "id": "1",
+      "streak": 0,
+      "pontos": 174
+    }
+  ],
+  "areas": [
+    {
+      "id": "1",
+      "titulo": "Linguagens",
+      "descricao": "Lingua Portuguesa e Estrangeira, Artes e Educacao Fisica.",
+      "icone": "📝",
+      "nota": 612,
+      "cor": "#E7F6FB"
+    },
+    {
+      "id": "2",
+      "titulo": "Ciencias Humanas",
+      "descricao": "Filosofia, Geografia, Historia e Sociologia.",
+      "icone": "🏛️",
+      "nota": 552,
+      "cor": "#F7E8EC"
+    },
+    {
+      "id": "3",
+      "titulo": "Matematica",
+      "descricao": "Algebra, geometria, funcoes, estatistica e raciocinio logico.",
+      "icone": "📐",
+      "nota": 584,
+      "cor": "#FFF3D9"
+    }
+  ],
+  "planosHoje": [
+    {
+      "id": "1",
+      "dia": "Terca",
+      "data": "9 junho",
+      "concluidas": 0,
+      "total": 6,
+      "dias": [
+        {
+          "id": 1,
+          "nome": "Seg",
+          "numero": 8,
+          "hoje": false
+        },
+        {
+          "id": 2,
+          "nome": "Hoje",
+          "numero": 9,
+          "hoje": true
+        },
+        {
+          "id": 3,
+          "nome": "Qua",
+          "numero": 10,
+          "hoje": false
+        },
+        {
+          "id": 4,
+          "nome": "Qui",
+          "numero": 11,
+          "hoje": false
+        },
+        {
+          "id": 5,
+          "nome": "Sex",
+          "numero": 12,
+          "hoje": false
+        }
+      ],
+      "licoes": [
+        {
+          "id": 1,
+          "materia": "Matematica",
+          "titulo": "O que e uma Fracao",
+          "descricao": "Numerador, denominador e a ideia de fracao como parte de um todo."
+        },
+        {
+          "id": 2,
+          "materia": "Linguagens",
+          "titulo": "Interpretacao de texto",
+          "descricao": "Leia enunciados, identifique contexto e encontre pistas no texto."
+        }
+      ]
+    }
+  ],
+  "ranking": [
+    {
+      "id": "1",
+      "nome": "Ana Silva",
+      "pontos": 326,
+      "acertos": 91,
+      "atual": false
+    },
+    {
+      "id": "2",
+      "nome": "Carlos Souza",
+      "pontos": 298,
+      "acertos": 88,
+      "atual": false
+    },
+    {
+      "id": "3",
+      "nome": "Maria Costa",
+      "pontos": 275,
+      "acertos": 85,
+      "atual": false
+    },
+    {
+      "id": "4",
+      "nome": "Joao Lima",
+      "pontos": 251,
+      "acertos": 80,
+      "atual": false
+    },
+    {
+      "id": "5",
+      "nome": "Voce",
+      "pontos": 174,
+      "acertos": 82,
+      "atual": true
+    }
+  ],
+  "grupos": [
+    {
+      "id": "1",
+      "nome": "estudys",
+      "membros": 3
+    },
+    {
+      "id": "2",
+      "nome": "amo estudar",
+      "membros": 2
+    }
+  ]
+  
+}
