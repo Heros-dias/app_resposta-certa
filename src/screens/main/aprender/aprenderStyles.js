@@ -172,6 +172,14 @@ const styles = StyleSheet.create({
         fontSize: 16,
         lineHeight: 24,
     },
+
+    statusText: {
+        color: "#555",
+        fontSize: 16,
+        marginHorizontal: 20,
+        marginBottom: 20,
+        textAlign: "center",
+    },
 });
 
 export default styles;

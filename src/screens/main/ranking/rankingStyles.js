@@ -104,6 +104,14 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 
+  statusText: {
+    color: "#555",
+    fontSize: 16,
+    marginHorizontal: 20,
+    marginBottom: 20,
+    textAlign: "center",
+  },
+
   bottomBar: {
     height: 80,
     backgroundColor: "#FFF",

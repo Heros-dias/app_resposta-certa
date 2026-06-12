@@ -84,6 +84,13 @@ const styles = StyleSheet.create({
     color: "#555",
   },
 
+  statusText: {
+    color: "#555",
+    fontSize: 16,
+    marginBottom: 20,
+    textAlign: "center",
+  },
+
   bottomNav: {
     position: "absolute",
     bottom: 0,

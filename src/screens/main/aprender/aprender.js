@@ -1,12 +1,37 @@
 
-import React from "react";
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 
 import styles from "./aprenderStyles";
 import Header from "../../../components/Header/Header";
 import Footer from "../../../components/Footer/Footer";
+import { buscarPlanoHoje } from "../../../services/api";
 
 export default function Aprender({ navigation }) {
+    const [plano, setPlano] = useState(null);
+    const [carregando, setCarregando] = useState(true);
+    const [erro, setErro] = useState("");
+
+    useEffect(() => {
+        async function carregarPlano() {
+            try {
+                const data = await buscarPlanoHoje();
+                setPlano(data);
+            } catch (error) {
+                const textoErro = "Nao foi possivel carregar o plano.";
+                setErro(textoErro);
+                console.log(textoErro, error.message);
+            } finally {
+                setCarregando(false);
+            }
+        }
+
+        carregarPlano();
+    }, []);
+
+    const dias = plano?.dias || [];
+    const licoes = plano?.licoes || [];
+
     return (
         <View style={styles.container}>
             <Header />
@@ -14,30 +39,19 @@ export default function Aprender({ navigation }) {
                 {/* Dias */}
 
                 <View style={styles.daysContainer}>
-                    <View style={styles.dayCard}>
-                        <Text style={styles.dayText}>Seg</Text>
-                        <Text style={styles.dayNumber}>8</Text>
-                    </View>
-
-                    <View style={styles.todayCard}>
-                        <Text style={styles.todayText}>Hoje</Text>
-                        <Text style={styles.todayNumber}>9</Text>
-                    </View>
-
-                    <View style={styles.dayCard}>
-                        <Text style={styles.dayText}>Qua</Text>
-                        <Text style={styles.dayNumber}>10</Text>
-                    </View>
-
-                    <View style={styles.dayCard}>
-                        <Text style={styles.dayText}>Qui</Text>
-                        <Text style={styles.dayNumber}>11</Text>
-                    </View>
-
-                    <View style={styles.dayCard}>
-                        <Text style={styles.dayText}>Sex</Text>
-                        <Text style={styles.dayNumber}>12</Text>
-                    </View>
+                    {dias.map((dia) => (
+                        <View
+                            key={dia.id}
+                            style={dia.hoje ? styles.todayCard : styles.dayCard}
+                        >
+                            <Text style={dia.hoje ? styles.todayText : styles.dayText}>
+                                {dia.nome}
+                            </Text>
+                            <Text style={dia.hoje ? styles.todayNumber : styles.dayNumber}>
+                                {dia.numero}
+                            </Text>
+                        </View>
+                    ))}
                 </View>
 
                 {/* Plano de Hoje */}
@@ -46,7 +60,7 @@ export default function Aprender({ navigation }) {
                     <Text style={styles.planTitle}>Plano de hoje</Text>
 
                     <Text style={styles.planDate}>
-                        Terça • 9 junho
+                        {plano ? `${plano.dia} • ${plano.data}` : "Carregando..."}
                     </Text>
 
                     <Text style={styles.progressLabel}>
@@ -54,7 +68,9 @@ export default function Aprender({ navigation }) {
                     </Text>
 
                     <View style={styles.progressBar}>
-                        <Text style={styles.progressText}>0/6</Text>
+                        <Text style={styles.progressText}>
+                            {plano ? `${plano.concluidas}/${plano.total}` : "0/0"}
+                        </Text>
                     </View>
 
                     <TouchableOpacity style={styles.button}>
@@ -64,30 +80,37 @@ export default function Aprender({ navigation }) {
                     </TouchableOpacity>
                 </View>
 
+                {carregando ? (
+                    <Text style={styles.statusText}>Carregando plano...</Text>
+                ) : null}
+
+                {erro ? <Text style={styles.statusText}>{erro}</Text> : null}
+
                 {/* Timeline */}
 
-                <View style={styles.timelineItem}>
-                    <View style={styles.circle} />
+                {licoes.map((licao) => (
+                    <View key={licao.id} style={styles.timelineItem}>
+                        <View style={styles.circle} />
 
-                    <View style={styles.lessonCard}>
-                        <View style={styles.subjectHeader}>
-                            <Text style={styles.subjectText}>
-                                Matemática
-                            </Text>
-                        </View>
+                        <View style={styles.lessonCard}>
+                            <View style={styles.subjectHeader}>
+                                <Text style={styles.subjectText}>
+                                    {licao.materia}
+                                </Text>
+                            </View>
 
-                        <View style={styles.lessonContent}>
-                            <Text style={styles.lessonTitle}>
-                                O que é uma Fração
-                            </Text>
+                            <View style={styles.lessonContent}>
+                                <Text style={styles.lessonTitle}>
+                                    {licao.titulo}
+                                </Text>
 
-                            <Text style={styles.lessonDescription}>
-                                Numerador, denominador e a ideia
-                                de fração como parte de um todo...
-                            </Text>
+                                <Text style={styles.lessonDescription}>
+                                    {licao.descricao}
+                                </Text>
+                            </View>
                         </View>
                     </View>
-                </View>
+                ))}
 
                 <View style={{ height: 100 }} />
 
@@ -95,7 +118,7 @@ export default function Aprender({ navigation }) {
 
             <Footer
                 navigation={navigation}
-                active="Treinar"
+                active="Aprender"
             />
         </View>
     );

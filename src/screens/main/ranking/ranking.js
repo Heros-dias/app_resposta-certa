@@ -1,11 +1,49 @@
-import React from "react";
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, } from "react-native";
+import React, { useEffect, useMemo, useState } from "react";
+import { View, Text, ScrollView } from "react-native";
 
 import styles from "./rankingStyles";
 import Header from "../../../components/Header/Header";
 import Footer from "../../../components/Footer/Footer";
+import { listarRanking } from "../../../services/api";
 
 export default function Ranking({ navigation }) {
+  const [ranking, setRanking] = useState([]);
+  const [carregando, setCarregando] = useState(true);
+  const [erro, setErro] = useState("");
+
+  useEffect(() => {
+    async function carregarRanking() {
+      try {
+        const data = await listarRanking();
+        setRanking(data);
+      } catch (error) {
+        const textoErro = "Nao foi possivel carregar o ranking.";
+        setErro(textoErro);
+        console.log(textoErro, error.message);
+      } finally {
+        setCarregando(false);
+      }
+    }
+
+    carregarRanking();
+  }, []);
+
+  const usuarioAtual = useMemo(
+    () => ranking.find((usuario) => usuario.atual) || ranking[0],
+    [ranking]
+  );
+
+  const posicaoAtual = usuarioAtual
+    ? ranking.findIndex((usuario) => usuario.id === usuarioAtual.id) + 1
+    : 0;
+
+  const medalha = (posicao) => {
+    if (posicao === 1) return "🥇";
+    if (posicao === 2) return "🥈";
+    if (posicao === 3) return "🥉";
+    return `${posicao}º`;
+  };
+
   return (
     <View style={styles.container}>
       {/* Header */}
@@ -20,7 +58,7 @@ export default function Ranking({ navigation }) {
 
         {/* Sua posição */}
         <View style={styles.positionCard}>
-          <Text style={styles.positionNumber}>#12</Text>
+          <Text style={styles.positionNumber}>#{posicaoAtual || "-"}</Text>
           <Text style={styles.positionText}>
             Sua posição geral
           </Text>
@@ -29,12 +67,12 @@ export default function Ranking({ navigation }) {
         {/* Estatísticas */}
         <View style={styles.statsContainer}>
           <View style={styles.statCard}>
-            <Text style={styles.statNumber}>174</Text>
+            <Text style={styles.statNumber}>{usuarioAtual?.pontos || 0}</Text>
             <Text style={styles.statLabel}>Pontos</Text>
           </View>
 
           <View style={styles.statCard}>
-            <Text style={styles.statNumber}>82%</Text>
+            <Text style={styles.statNumber}>{usuarioAtual?.acertos || 0}%</Text>
             <Text style={styles.statLabel}>Acertos</Text>
           </View>
         </View>
@@ -44,41 +82,25 @@ export default function Ranking({ navigation }) {
           Top Estudantes
         </Text>
 
-        <View style={styles.userCard}>
-          <Text style={styles.userPosition}>🥇</Text>
-          <Text style={styles.userName}>Ana Silva</Text>
-          <Text style={styles.userScore}>326 pts</Text>
-        </View>
+        {carregando ? (
+          <Text style={styles.statusText}>Carregando ranking...</Text>
+        ) : null}
 
-        <View style={styles.userCard}>
-          <Text style={styles.userPosition}>🥈</Text>
-          <Text style={styles.userName}>Carlos Souza</Text>
-          <Text style={styles.userScore}>298 pts</Text>
-        </View>
+        {erro ? <Text style={styles.statusText}>{erro}</Text> : null}
 
-        <View style={styles.userCard}>
-          <Text style={styles.userPosition}>🥉</Text>
-          <Text style={styles.userName}>Maria Costa</Text>
-          <Text style={styles.userScore}>275 pts</Text>
-        </View>
-
-        <View style={styles.userCard}>
-          <Text style={styles.userPosition}>4º</Text>
-          <Text style={styles.userName}>João Lima</Text>
-          <Text style={styles.userScore}>251 pts</Text>
-        </View>
-
-        <View style={styles.userCard}>
-          <Text style={styles.userPosition}>12º</Text>
-          <Text style={styles.userName}>Você</Text>
-          <Text style={styles.userScore}>174 pts</Text>
-        </View>
+        {ranking.map((usuario, index) => (
+          <View key={usuario.id} style={styles.userCard}>
+            <Text style={styles.userPosition}>{medalha(index + 1)}</Text>
+            <Text style={styles.userName}>{usuario.nome}</Text>
+            <Text style={styles.userScore}>{usuario.pontos} pts</Text>
+          </View>
+        ))}
       </ScrollView>
 
       {/* Menu Inferior */}
      <Footer
              navigation={navigation}
-             active="Treinar"
+             active="Ranking"
            />
     </View>
   );
